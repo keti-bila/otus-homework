@@ -1,4 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.aeonbits.owner.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -27,7 +28,8 @@ public class OpenPageTest {
 
     @Test
     public void openPageTest() {
-        driver.get("https://otus.ru/");
+        ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
+        driver.get(cfg.homepage());
         String title = driver.getTitle();
         Assert.assertEquals("Title is not as expected", "Онлайн‑курсы для профессионалов, дистанционное обучение современным профессиям", title);
         logger.info("Test starts");
