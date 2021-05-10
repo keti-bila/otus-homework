@@ -45,7 +45,7 @@ public class HomeWorkTest {
         driver.get(cfg.homepage());
         WebElement contactButton = driver.findElement(By.cssSelector(".header2_subheader-container__right>div>a:last-child"));
         contactButton.click();
-        String actualAdress = driver.findElement(By.xpath("//*[@id=\"__next\"]/div[3]/div[1]/div[3]/div[1]/div[3]/div[2]")).getText();
+        String actualAdress = driver.findElement(By.xpath("//div[contains(text(),'Адрес')]/following-sibling::div")).getText();
         String expectedAdress = "125167, г. Москва, Нарышкинская аллея., д. 5, стр. 2, тел. +7 499 938-92-02";
         Assert.assertEquals(actualAdress, expectedAdress, "Adress is not as expected");
         logger.info("Address was checked");
@@ -73,7 +73,7 @@ public class HomeWorkTest {
         faq.click();
         WebElement question = driver.findElement(By.xpath("//*[.='Где посмотреть программу интересующего курса?']"));
         question.click();
-        WebElement answer = driver.findElement(By.xpath("/html/body/div[1]/div/div[3]/div[2]/div[2]/div[4]/div[2]"));
+        WebElement answer = driver.findElement(By.xpath("//*[.='Где посмотреть программу интересующего курса?']/following-sibling::div"));
         String answerText = answer.getText();
         String expectedText = "Программу курса в сжатом виде можно увидеть на странице курса после блока с преподавателями. Подробную программу курса можно скачать кликнув на “Скачать подробную программу курса”";
         Assert.assertEquals(answerText, expectedText, "Text in answer is not as expected");

@@ -28,10 +28,10 @@ public class OpenPageTest {
 
     @Test
     public void openPageTest() {
+        logger.info("Test starts");
         ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
         driver.get(cfg.homepage());
         String title = driver.getTitle();
         Assert.assertEquals("Title is not as expected", "Онлайн‑курсы для профессионалов, дистанционное обучение современным профессиям", title);
-        logger.info("Test starts");
     }
 }
