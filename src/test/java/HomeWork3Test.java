@@ -96,7 +96,7 @@ public class HomeWork3Test {
         List<WebElement> compareList = driver.findElements(By.xpath(compareListXpath));
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(compareList.size(), 2, "Number of options in compare list is not as expected");
-        logger.info("Number of phones in compare list is " + compareList.size());
+        logger.info("Number of phones in compare list is {}", compareList.size());
         ArrayList<String> phoneList = new ArrayList<>();
         for (int i = 1; i <= compareList.size(); i++) {
             String phone = driver.findElement(By.xpath(compareListXpath + "[" + i + "]" + "/div/a")).getText();
