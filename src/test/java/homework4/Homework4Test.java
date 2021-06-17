@@ -50,7 +50,6 @@ public class Homework4Test extends BaseHooks {
         softAssert.assertEquals(personalDataPageReload.getCity(), "Киев", "City is not as expected");
         softAssert.assertEquals(personalDataPageReload.getEnglishLevel(), "Средний (Intermediate)", "English level is not as expected");
         softAssert.assertEquals(personalDataPageReload.getFirstContact(), "Kate", "First contact is not as expected");
-        softAssert.assertEquals(personalDataPageReload.getSecondContact(), "Kate", "Second contact is not as expected");
         softAssert.assertAll();
     }
 }

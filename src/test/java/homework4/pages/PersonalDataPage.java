@@ -149,7 +149,9 @@ public class PersonalDataPage extends AbstractPage {
     }
 
     public PersonalDataPage setSecondContact(String typeOfSecondContact, String secondContact) {
-        driver.findElement(addSecondContact).click();
+        if (driver.findElements(By.xpath("//*[@data-num]")).size() < 2) {
+            driver.findElement(addSecondContact).click();
+        }
         driver.findElement(this.secondContact).click();
         By chooseSecondContact = By.xpath("(//button[@data-value='" + typeOfSecondContact + "'])[2]");
         wait.until(ExpectedConditions.visibilityOfElementLocated(chooseSecondContact));
