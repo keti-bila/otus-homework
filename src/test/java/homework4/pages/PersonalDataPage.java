@@ -1,10 +1,16 @@
 package homework4.pages;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.io.ByteArrayInputStream;
 
 public class PersonalDataPage extends AbstractPage {
     private Logger logger = LogManager.getLogger(PersonalDataPage.class);
@@ -74,42 +80,49 @@ public class PersonalDataPage extends AbstractPage {
         return driver.findElement(setSecondContactValue).getAttribute(VALUE_ATTRIBUTE);
     }
 
+    @Step("Enter first name value")
     public PersonalDataPage setFirstName(String firstName) {
         clearAndSendKeysOfInputByLocator(this.firstName, firstName);
         logger.info("First name was set");
         return this;
     }
 
+    @Step("Enter last name value")
     public PersonalDataPage setLastName(String lastName) {
         clearAndSendKeysOfInputByLocator(this.lastName, lastName);
         logger.info("Last name was set");
         return this;
     }
 
+    @Step("Enter first latin name value")
     public PersonalDataPage setFirstNameLatin(String firstNameLatin) {
         clearAndSendKeysOfInputByLocator(this.firstNameLatin, firstNameLatin);
         logger.info("First name latin was set");
         return this;
     }
 
+    @Step("Enter last latin name value")
     public PersonalDataPage setLastNameLatin(String lastNameLatin) {
         clearAndSendKeysOfInputByLocator(this.lastNameLatin, lastNameLatin);
         logger.info("Last name latin was set");
         return this;
     }
 
+    @Step("Enter blog name value")
     public PersonalDataPage setBlogName(String blogName) {
         clearAndSendKeysOfInputByLocator(this.blogName, blogName);
         logger.info("Blog name was set");
         return this;
     }
 
+    @Step("Enter birthdate value")
     public PersonalDataPage setDateOfBirth(String dateOfBirth) {
         clearAndSendKeysOfInputByLocator(this.dateOfBirth, dateOfBirth);
         logger.info("Date of birth was set");
         return this;
     }
 
+    @Step("Enter country value")
     public PersonalDataPage setCountry(String country) {
         driver.findElement(this.country).click();
         By chooseCountry = By.xpath("//button[@title='" + country + "']");
@@ -118,6 +131,7 @@ public class PersonalDataPage extends AbstractPage {
         return this;
     }
 
+    @Step("Enter city value")
     public PersonalDataPage setCity(String city) {
         actions.moveToElement(driver.findElement(this.city)).perform();
         driver.findElement(this.city).click();
@@ -128,6 +142,7 @@ public class PersonalDataPage extends AbstractPage {
         return this;
     }
 
+    @Step("Enter english level value")
     public PersonalDataPage setEnglishLevel(String englishLevel) {
         driver.findElement(this.englishLevel).click();
         By chooseEnglishLevel = By.xpath("//button[@title='" + englishLevel + "']");
@@ -136,6 +151,7 @@ public class PersonalDataPage extends AbstractPage {
         return this;
     }
 
+    @Step("Enter first contact value")
     public PersonalDataPage setFirstContact(String typeOfFirstContact, String firstContact) {
         actions.moveToElement(driver.findElement(this.firstContact)).build().perform();
         driver.findElement(this.firstContact).click();
@@ -148,6 +164,7 @@ public class PersonalDataPage extends AbstractPage {
         return this;
     }
 
+    @Step("Enter second contact value")
     public PersonalDataPage setSecondContact(String typeOfSecondContact, String secondContact) {
         if (driver.findElements(By.xpath("//*[@data-num]")).size() < 2) {
             driver.findElement(addSecondContact).click();
@@ -161,8 +178,12 @@ public class PersonalDataPage extends AbstractPage {
         return this;
     }
 
+    @Step("Saving personal data")
     public void clickSave() {
         driver.findElement(saveButton).click();
         logger.info("Personal data was saved");
+        Allure.addAttachment("Personal data was saved",
+                new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+
     }
 }

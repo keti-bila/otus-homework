@@ -1,5 +1,6 @@
 package homework4.pages;
 
+import io.qameta.allure.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -16,6 +17,7 @@ public class LoginPage extends AbstractPage {
         super(driver);
     }
 
+    @Step("Login step to enter email: {0} and password: {1}")
     public StartPage authorise(String email, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput));
         clearAndSendKeysOfInputByLocator(emailInput, email);
@@ -24,6 +26,4 @@ public class LoginPage extends AbstractPage {
         logger.info("You've been logged in");
         return new StartPage(driver);
     }
-
-
 }

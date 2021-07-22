@@ -3,6 +3,10 @@ package homework4;
 import homework4.pages.PersonalDataPage;
 import homework4.pages.StartPage;
 import homework4.util.BaseHooks;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
@@ -10,10 +14,14 @@ import org.testng.asserts.SoftAssert;
 
 import java.nio.charset.Charset;
 
+@Epic("Personal page data testing")
+@Feature("Login personal page and entering personal data")
 public class Homework4Test extends BaseHooks {
     private static final Logger LOGGER = LogManager.getLogger(Homework4Test.class);
 
-    @Test
+    @Test(description = "Login https://otus.ru/, enter personal data, verify data is saved correctly")
+    @Story("Login personal page with valid data and entering personal data")
+    @Description("Login https://otus.ru/, enter personal data, verify data is saved correctly")
     public void personalDataPageTest() {
         LOGGER.debug("The default logging level {}", Charset.defaultCharset().displayName());
         PersonalDataPage personalDataPage = StartPage.open(getCfg().homepage(), getWebDriverHooks().getDriver())

@@ -1,5 +1,6 @@
 package homework4.pages;
 
+import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -17,18 +18,21 @@ public class StartPage extends AbstractPage {
         super(driver);
     }
 
+    @Step("Open start page")
     public static StartPage open(String url, WebDriver driver) {
         driver.get(url);
         logger.info("Start page is opened");
         return new StartPage(driver);
     }
 
+    @Step("Go to login page")
     public LoginPage goToLogin() {
         driver.findElement(goToLoginButton).click();
         logger.info("Login page is opened");
         return new LoginPage(driver);
     }
 
+    @Step("Go to personal page")
     public PersonalPageTopBarElement goToPersonalPage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(nameButton));
         actions.moveToElement(driver.findElement(nameButton)).perform();

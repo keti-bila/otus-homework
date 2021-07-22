@@ -1,5 +1,6 @@
 package homework4.pages;
 
+import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,6 +15,7 @@ public class PersonalPageTopBarElement extends AbstractPage {
         super(driver);
     }
 
+    @Step("Go to page with personal data")
     public PersonalDataPage openPersonalData() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(personalDataButton));
         driver.findElement(personalDataButton).click();
