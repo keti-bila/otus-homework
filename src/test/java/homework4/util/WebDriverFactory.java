@@ -9,6 +9,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 
 public class WebDriverFactory {
     public static WebDriver createDriver(Browsers type) {
@@ -41,5 +47,25 @@ public class WebDriverFactory {
             default:
                 return null;
         }
+    }
+
+    public static WebDriver createDriver() {
+        WebDriver driver = null;
+        String slenoidURL = "http://localhost:4444/wd/hub"; //111.11.11.11 -your IP address
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setBrowserName(System.getProperty("browser_name", "chrome"));
+        caps.setVersion(System.getProperty("browser_version", "91.0"));
+        caps.setCapability("enableVNC", true);
+        caps.setCapability("enableVideo", false);
+        caps.setCapability("enableLog", true);
+
+
+        try {
+            driver = new RemoteWebDriver(new URL(slenoidURL), caps);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return driver;
     }
 }
