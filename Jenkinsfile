@@ -60,11 +60,8 @@ pipeline {
                     println('allure report created')
 
                     // Достаем информацию по тестам из junit репорта
-                    def summary = junit testResults: '**/target/surefire-reports/*.xml'
-                    println("summary generated")
-
-                    // Текст оповещения
                     def summary = junit testResults: '**/target/surefire-reports/junitreports/*.xml'
+                    println("summary generated")
 
                     def emailMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}, Branch ${params.GIT_BRANCH}. \nPassed time: ${currentBuild.durationString}. \n\nTESTS:\nTotal = ${summary.totalCount},\nFailures = ${summary.failCount},\nSkipped = ${summary.skipCount},\nPassed = ${summary.passCount} \n\nMore info at: ${env.BUILD_URL}"
 
