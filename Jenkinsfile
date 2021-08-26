@@ -18,8 +18,8 @@ pipeline {
     parameters {
         string(name: 'GIT_URL', defaultValue: 'https://github.com/keti-bila/otus-homework.git', description: 'The target git url')
         string(name: 'GIT_BRANCH', defaultValue: 'allure-homework', description: 'The target git branch')
-        choice(name: 'BROWSER_NAME', defaultValue: 'chrome', choices: ['chrome'], description: 'Pick the target browser in Selenoid')
-        choice(name: 'BROWSER_VERSION', defaultValue: '91.0', choices: ['91.0', '90.0'], description: 'Pick the target browser version in Selenoid')
+        choice(name: 'BROWSER_NAME', choices: ['chrome'], description: 'Pick the target browser in Selenoid')
+        choice(name: 'BROWSER_VERSION', choices: ['91.0', '90.0'], description: 'Pick the target browser version in Selenoid')
     }
 
     stages {
