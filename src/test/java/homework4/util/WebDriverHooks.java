@@ -14,7 +14,7 @@ public class WebDriverHooks {
     private ServerConfig cfg = ConfigFactory.create(ServerConfig.class, System.getProperties(), System.getenv());
 
     public void setDriver() {
-        this.driver = WebDriverFactory.createDriver(/*Browsers.getBrowserByString(cfg.browser())*/);
+        this.driver = WebDriverFactory.createDriver(Browsers.getBrowserByString(cfg.browser()));
         logger.info("Driver is initialised");
         if (this.driver !=null) {
             this.driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);

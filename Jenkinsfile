@@ -18,8 +18,8 @@ pipeline {
     parameters {
         string(name: 'GIT_URL', defaultValue: 'https://github.com/keti-bila/otus-homework.git', description: 'The target git url')
         string(name: 'GIT_BRANCH', defaultValue: 'allure-homework', description: 'The target git branch')
-        choice(name: 'BROWSER_NAME', choices: ['chrome'], description: 'Pick the target browser in Selenoid')
-        choice(name: 'BROWSER_VERSION', choices: ['91.0', '90.0'], description: 'Pick the target browser version in Selenoid')
+        choice(name: 'BROWSER_NAME', defaultValue: 'chrome', choices: ['chrome'], description: 'Pick the target browser in Selenoid')
+        choice(name: 'BROWSER_VERSION', defaultValue: '91.0', choices: ['91.0', '90.0'], description: 'Pick the target browser version in Selenoid')
     }
 
     stages {
@@ -33,9 +33,12 @@ pipeline {
             }
         }
         stage('Run maven clean test') {
+        environment {
+            OTUS_CREDENTIALS = credentials('otus-test-creds')
+        }
             steps {
 		// sh меняем на bat, если операционная система Windows
-                bat 'mvn clean test -Dbrowser_name=$BROWSER_NAME -Dbrowser_version=$BROWSER_VERSION'
+                bat "mvn clean test -Dpassword=%OTUS_CREDENTIALS_PSW% -Dbrowser=%BROWSER_NAME% -Demail=%OTUS_CREDENTIALS_USR%"
             }
         }
         stage('Backup and Reports') {
@@ -57,20 +60,20 @@ pipeline {
                     println('allure report created')
 
                     // Узнаем ветку репозитория
-                    def branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
-                    println("branch= " + branch)
+//                     def branch = bat(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
+//                     println("branch= " + branch)
 
                     // Достаем информацию по тестам из junit репорта
                     def summary = junit testResults: '**/target/surefire-reports/*.xml'
                     println("summary generated")
 
-                    sendNotifications()
+                    sendNotifications("${params.GIT_BRANCH}")
 
                     // Текст оповещения
-                    def sendNotifications() {
-		    def summary = junit testResults: '**/target/surefire-reports/*.xml'
+                    def sendNotifications(String branch) {
+		    def summary = junit testResults: '**/target/surefire-reports/junitreports/*.xml'
 
-		    def branch = bat(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
+// 		    def branch = bat(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
 		    def emailMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}, Branch ${branch}. \nPassed time: ${currentBuild.durationString}. \n\nTESTS:\nTotal = ${summary.totalCount},\nFailures = ${summary.failCount},\nSkipped = ${summary.skipCount},\nPassed = ${summary.passCount} \n\nMore info at: ${env.BUILD_URL}"
 
 		    emailext (
