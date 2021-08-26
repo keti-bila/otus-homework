@@ -33,11 +33,11 @@ pipeline {
             }
         }
         stage('Run maven clean test') {
-        environment {
-            OTUS_CREDENTIALS = credentials('otus-test-creds')
-        }
+            environment {
+                OTUS_CREDENTIALS = credentials('otus-test-creds')
+            }
             steps {
-		// sh меняем на bat, если операционная система Windows
+		        // sh меняем на bat, если операционная система Windows
                 bat "mvn clean test -Dpassword=%OTUS_CREDENTIALS_PSW% -Dbrowser=%BROWSER_NAME% -Demail=%OTUS_CREDENTIALS_USR%"
             }
         }
@@ -59,35 +59,26 @@ pipeline {
                     ])
                     println('allure report created')
 
-                    // Узнаем ветку репозитория
-//                     def branch = bat(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
-//                     println("branch= " + branch)
-
                     // Достаем информацию по тестам из junit репорта
                     def summary = junit testResults: '**/target/surefire-reports/*.xml'
                     println("summary generated")
 
-                    sendNotifications("${params.GIT_BRANCH}")
-
                     // Текст оповещения
-                    def sendNotifications(String branch) {
-		    def summary = junit testResults: '**/target/surefire-reports/junitreports/*.xml'
+                    def summary = junit testResults: '**/target/surefire-reports/junitreports/*.xml'
 
-// 		    def branch = bat(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD\n').trim().tokenize().last()
-		    def emailMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}, Branch ${branch}. \nPassed time: ${currentBuild.durationString}. \n\nTESTS:\nTotal = ${summary.totalCount},\nFailures = ${summary.failCount},\nSkipped = ${summary.skipCount},\nPassed = ${summary.passCount} \n\nMore info at: ${env.BUILD_URL}"
+                    def emailMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}, Branch ${params.GIT_BRANCH}. \nPassed time: ${currentBuild.durationString}. \n\nTESTS:\nTotal = ${summary.totalCount},\nFailures = ${summary.failCount},\nSkipped = ${summary.skipCount},\nPassed = ${summary.passCount} \n\nMore info at: ${env.BUILD_URL}"
 
-		    emailext (
-		        subject: "Jenkins Report",
-		        body: emailMessage,
-		        to: "${EMAIL_TO}",
-		        from: "jenkins@code-maven.com"
-    		    )
+                    emailext (
+                        subject: "Jenkins Report",
+                        body: emailMessage,
+                        to: "${EMAIL_TO}",
+                        from: "jenkins@code-maven.com"
+                        )
 
-		    def colorCode = '#FF0000'
-		    def slackMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}. \nTotal = ${summary.totalCount}, Failures = ${summary.failCount}, Skipped = ${summary.skipCount}, Passed = ${summary.passCount} \nMore info at: ${env.BUILD_URL}"
+                    def colorCode = '#FF0000'
+                    def slackMessage = "${currentBuild.currentResult}: Job '${env.JOB_NAME}', Build ${env.BUILD_NUMBER}. \nTotal = ${summary.totalCount}, Failures = ${summary.failCount}, Skipped = ${summary.skipCount}, Passed = ${summary.passCount} \nMore info at: ${env.BUILD_URL}"
 
-		    slackSend(color: colorCode, message: slackMessage)
-		    }
+                    slackSend(color: colorCode, message: slackMessage)
                   }
                 }
             }
