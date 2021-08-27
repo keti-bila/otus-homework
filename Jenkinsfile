@@ -68,8 +68,8 @@ pipeline {
                     emailext (
                         subject: "Jenkins Report",
                         body: emailMessage,
-                        to: "${EMAIL_TO}",
-                        from: "jenkins@code-maven.com"
+                        recipientProviders: [buildUser(),upstreamDevelopers()],
+                        from: "${EMAIL_TO}"
                         )
 
                     def colorCode = '#FF0000'
