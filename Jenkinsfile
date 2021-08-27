@@ -12,7 +12,7 @@ pipeline {
         LC_ALL = 'en_US.UTF-8'
         LANG    = 'en_US.UTF-8'
         LANGUAGE = 'en_US.UTF-8'
-        EMAIL_TO = 'stadnik.katerina@gmail.com'
+        EMAIL_TO = 'tamaratestovaa@gmail.com'
     }
 
     parameters {
